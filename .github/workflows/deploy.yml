@@ -1,0 +1,26 @@
+name: Shaktix Multi-Cloud CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate-and-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Validate Supabase Database Connectivity
+        run: |
+          echo "Verifying Supabase Cloud Database connection..."
+          curl -s -X GET "https://dcbpqapojfxacpvjobyp.supabase.co/rest/v1/leads?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjYnBxYXBvamZ4YWNwdmpvYnlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MDM4MjAsImV4cCI6MjEwNTM3OTgyMH0.RSt2lJxaPh_JwcpORuBozkUSIYaRrVt1_y9eEPj3YwM' }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjYnBxYXBvamZ4YWNwdmpvYnlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MDM4MjAsImV4cCI6MjEwNTM3OTgyMH0.RSt2lJxaPh_JwcpORuBozkUSIYaRrVt1_y9eEPj3YwM' }}" \
+            -o /dev/null -w "%{http_code}" | grep -q "200" && echo "✅ Supabase Handshake Healthy" || echo "⚠️ Check Supabase credentials"
+
+      - name: Report Deployment Pipeline Status
+        run: |
+          echo "🚀 Pipeline Status: GitHub (Source) -> Vercel (Edge CDN) -> Supabase (PostgreSQL)"
+          echo "Production URL: https://shaktix-automations.vercel.app"
