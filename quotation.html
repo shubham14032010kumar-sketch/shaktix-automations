@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official Quotation - Shaktix Automations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    body {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .action-bar {
+      width: 100%;
+      max-width: 820px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn-secondary {
+      background: white;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+    }
+    .quotation-card {
+      width: 100%;
+      max-width: 820px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      padding: 48px;
+      border: 1px solid #e2e8f0;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 22px;
+    }
+    .brand-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #0f172a;
+    }
+    .brand-tagline {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .doc-meta {
+      text-align: right;
+    }
+    .doc-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1e293b;
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+    }
+    .doc-number {
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 32px;
+    }
+    .info-box h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+    .info-box p {
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .info-box strong {
+      color: #0f172a;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th {
+      background: #f8fafc;
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      border-bottom: 1px solid #e2e8f0;
+      border-top: 1px solid #e2e8f0;
+    }
+    td {
+      padding: 16px;
+      font-size: 14px;
+      color: #334155;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: top;
+    }
+    .text-right {
+      text-align: right;
+    }
+    .total-section {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 30px;
+    }
+    .total-box {
+      width: 280px;
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 16px 20px;
+      border: 1px solid #e2e8f0;
+    }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      padding: 6px 0;
+      color: #64748b;
+    }
+    .total-grand {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      border-top: 2px solid #e2e8f0;
+      margin-top: 8px;
+      padding-top: 8px;
+    }
+    .payment-terms {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #2563eb;
+      margin-bottom: 30px;
+    }
+    .payment-terms h5 {
+      font-size: 13px;
+      color: #0f172a;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .payment-terms p, .payment-terms li {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+    .payment-terms ul {
+      padding-left: 18px;
+    }
+    .footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .action-bar {
+        display: none;
+      }
+      .quotation-card {
+        border: none;
+        box-shadow: none;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="action-bar">
+    <div style="font-size: 14px; color: #64748b;">
+      Editable client proposal ready for sharing
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn btn-secondary" onclick="window.location.href='index.html'">← Back to Agency Website</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    </div>
+  </div>
+
+  <div class="quotation-card">
+    <!-- Header -->
+    <div class="header">
+      <div class="brand-logo">
+        <div class="brand-icon">S</div>
+        <div>
+          <div class="brand-title">SHAKTIX AUTOMATIONS</div>
+          <div class="brand-tagline">WhatsApp Marketing Software & Web Development Agency</div>
+        </div>
+      </div>
+      <div class="doc-meta">
+        <div class="doc-title">PROPOSAL</div>
+        <div class="doc-number">REF: #SX-2026-089</div>
+        <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Date: 23 September 2026</div>
+      </div>
+    </div>
+
+    <!-- Client & Agency Details -->
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>Prepared For (Client):</h4>
+        <p><strong>[Client Name / Business Name]</strong></p>
+        <p>[Business Address / Location]</p>
+        <p>Phone: +91 [Client Phone Number]</p>
+      </div>
+      <div class="info-box text-right">
+        <h4>Service Provider:</h4>
+        <p><strong>Shaktix Automations</strong></p>
+        <p>Patna, Bihar / Remote Pan-India</p>
+        <p>WhatsApp / Call: +91 98765 43210</p>
+        <p>Email: contact@shaktix.local</p>
+      </div>
+    </div>
+
+    <!-- Itemized Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Description & Deliverables</th>
+          <th>Type</th>
+          <th>Delivery</th>
+          <th class="text-right">Price (INR)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>High-Performance Modern Business Website</strong>
+            <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
+              - Custom responsive design (Desktop, Tablet, Mobile)<br>
+              - 1-Click WhatsApp Instant Chat Integration<br>
+              - Appointment Booking / Lead Inquiry Form<br>
+              - Ultra-fast load speed & Google SEO Setup
+            </p>
+          </td>
+          <td>Website Dev</td>
+          <td>2 Days</td>
+          <td class="text-right">₹3,999</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Shaktix WhatsApp Bulk Campaign Software</strong>
+            <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
+              - Lifetime desktop software license<br>
+              - Excel/CSV contact list direct import<br>
+              - Anti-Ban human randomized delay engine<br>
+              - Dynamic personalized tags ({Name}, {Offer})
+            </p>
+          </td>
+          <td>Software License</td>
+          <td>Instant</td>
+          <td class="text-right">₹2,000</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Bonus: 7-Day Anti-Ban Warmup Protocol + Local Leads</strong>
+            <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
+              - 100 Verified local targeted prospect phone numbers included free
+            </p>
+          </td>
+          <td>Free Bonus</td>
+          <td>Day 1</td>
+          <td class="text-right"><s style="color: #94a3b8;">₹1,500</s> ₹0</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Totals -->
+    <div class="total-section">
+      <div class="total-box">
+        <div class="total-row">
+          <span>Subtotal:</span>
+          <span>₹5,999</span>
+        </div>
+        <div class="total-row">
+          <span>Promotional Discount:</span>
+          <span style="color: #10b981;">- ₹1,000</span>
+        </div>
+        <div class="total-row total-grand">
+          <span>Combo Total:</span>
+          <span style="color: #2563eb;">₹4,999</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment & Terms -->
+    <div class="payment-terms">
+      <div>
+        <h5>Payment Methods:</h5>
+        <p><strong>UPI ID:</strong> shaktix@upi (or Scan QR)</p>
+        <p><strong>Bank:</strong> Shaktix Digital Solutions</p>
+        <p style="margin-top: 6px;">Advance: 50% to commence work, 50% on live preview handover.</p>
+      </div>
+      <div>
+        <h5>Terms & Warranty:</h5>
+        <ul>
+          <li>Delivery timeline: 48 business hours from content handover.</li>
+          <li>Free 30-day technical support and updates included.</li>
+          <li>100% money-back satisfaction guarantee on software demo.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div>Authorized Signatory: <strong>Team Shaktix Automations</strong></div>
+      <div>Thank you for choosing Shaktix to power your growth!</div>
+    </div>
+  </div>
+
+</body>
+</html>
