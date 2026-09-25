@@ -26,10 +26,20 @@ const ShaktixDB = {
     }
   },
 
-  // Record an inbound demo / contact inquiry
+  // Record an inbound demo / contact inquiry directly into leads table
   async submitInquiry(data) {
     try {
-      const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/customer_queries`, {
+      const leadPayload = [{
+        name: `${data.name} (${data.business_name || 'Business'})`,
+        phone: data.phone,
+        location: data.city || 'Patna',
+        category: data.category || 'General Business',
+        address: `Inbound Web Lead: ${data.business_name || ''}, ${data.city || ''}`,
+        pitch_message: data.message || 'Requested Free Custom Demo & Sample Website',
+        status: 'inbound_lead'
+      }];
+
+      const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/leads`, {
         method: 'POST',
         headers: {
           'apikey': SUPABASE_CONFIG.anonKey,
@@ -37,11 +47,11 @@ const ShaktixDB = {
           'Content-Type': 'application/json',
           'Prefer': 'return=representation'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(leadPayload)
       });
       return response.ok;
     } catch (e) {
-      console.error("Error submitting to Supabase:", e);
+      console.error("Error submitting inbound lead to Supabase:", e);
       return false;
     }
   }

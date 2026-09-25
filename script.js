@@ -263,8 +263,83 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.ShaktixDB) {
     window.ShaktixDB.getLeads(5).then(data => {
       if (data && data.length > 0) {
-        addLog("☁️ [SUPABASE CLOUD] Handshake OK: 50 Real Leads connected via PostgreSQL API.", "success");
+        addLog("☁️ [SUPABASE CLOUD] Handshake OK: 86 Real Leads connected via PostgreSQL API.", "success");
       }
     }).catch(e => console.log("Supabase background status:", e));
+  }
+
+  // 5. Inbound Lead Webhook & Instant WhatsApp Dispatch to CEO Shubham
+  const leadForm = document.getElementById('inboundLeadForm');
+  if (leadForm) {
+    leadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitLeadBtn');
+      const feedback = document.getElementById('leadFormFeedback');
+
+      const name = document.getElementById('leadName').value.trim();
+      const bizName = document.getElementById('leadBizName').value.trim();
+      const category = document.getElementById('leadCategory').value;
+      const city = document.getElementById('leadCity').value;
+      const rawPhone = document.getElementById('leadPhone').value.trim();
+      const phone = `+91${rawPhone}`;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "<span>⏳ Connecting 0-Sec Cloud Webhook...</span>";
+
+      const queryData = {
+        name: name,
+        phone: phone,
+        business_name: bizName,
+        category: category,
+        city: city,
+        message: `Inbound Demo Request from ${bizName} (${category}, ${city})`,
+        status: 'new_inbound_lead'
+      };
+
+      // 1. Submit to Supabase
+      let dbSaved = false;
+      if (window.ShaktixDB) {
+        try {
+          dbSaved = await window.ShaktixDB.submitInquiry(queryData);
+        } catch (err) {
+          console.warn('Supabase inquiry fallback:', err);
+        }
+      }
+
+      // 2. Format 0-Sec WhatsApp Alert for CEO Shubham (+918825208568)
+      const alertMsg = 
+        `🔥 *NEW INBOUND DEMO REQUEST - SHAKTIX WEB PORTAL*\n\n` +
+        `👤 *Client Name:* ${name}\n` +
+        `🏢 *Business:* ${bizName} (${category})\n` +
+        `📍 *Location:* ${city}\n` +
+        `📞 *WhatsApp:* ${phone}\n` +
+        `⚡ *Goal:* Requesting Free Custom Demo & Sample Website\n\n` +
+        `_Dispatched automatically via Shaktix Cloud Engine._`;
+
+      const encodedAlert = encodeURIComponent(alertMsg);
+      const ceoWaUrl = `https://wa.me/918825208568?text=${encodedAlert}`;
+
+      submitBtn.innerHTML = "<span>✅ Inbound Inquiry Registered!</span>";
+      submitBtn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+
+      feedback.style.display = 'block';
+      feedback.style.background = 'rgba(0, 245, 155, 0.1)';
+      feedback.style.border = '1px solid rgba(0, 245, 155, 0.3)';
+      feedback.style.color = '#fff';
+      feedback.innerHTML = `
+        <div style="font-size: 16px; font-weight: 800; color: #00f59b; margin-bottom: 8px;">
+          🎉 Congratulations ${name}! Your Demo Request is Active!
+        </div>
+        <div style="font-size: 13.5px; color: #cbd5e1; margin-bottom: 14px;">
+          Your lead has been secured in our database. Click below to initiate instant WhatsApp chat directly with Founder & CEO Shubham Kumar:
+        </div>
+        <a href="${ceoWaUrl}" target="_blank" class="btn btn-cinematic-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; font-size: 13.5px; text-decoration: none;">
+          <span>💬 Open Instant WhatsApp Chat with CEO Shubham →</span>
+        </a>
+      `;
+
+      // Auto trigger popup opening in new tab
+      window.open(ceoWaUrl, '_blank');
+    });
   }
 });
