@@ -132,11 +132,33 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   function getActiveCampaignLeads() {
-    if (industrySelect.value === 'coaching') {
+    const selected = industrySelect.value;
+    
+    // Dynamically filter from verified leads dataset if available
+    if (window.SHAKTIX_INITIAL_LEADS && window.SHAKTIX_INITIAL_LEADS.length > 0) {
+      const matched = window.SHAKTIX_INITIAL_LEADS.filter(l => {
+        const cat = (l.category || '').toLowerCase();
+        if (selected === 'gym') return cat.includes('gym') || cat.includes('fitness');
+        if (selected === 'coaching') return cat.includes('coaching') || cat.includes('academy');
+        if (selected === 'clinic') return cat.includes('clinic') || cat.includes('dental') || cat.includes('hospital');
+        if (selected === 'retail' || selected === 'realestate') return cat.includes('real') || cat.includes('retail');
+        return true;
+      });
+      if (matched.length > 0) {
+        return matched.map(l => ({
+          name: l.name,
+          phone: l.phone,
+          location: `${l.area || ''}, ${l.city || ''}`
+        }));
+      }
+    }
+
+    if (selected === 'coaching') {
       return kankarbaghCoachingLeads;
     }
+    
     // Generic fallback for other industries
-    const genericNames = ["Rahul Sharma", "Dr. Alok Verma", "Priya Singh", "Amit Patel", "Neha Gupta", "Vikram Rathore", "Sunil Yadav", "Ananya Roy", "Deepak Mishra", "Pooja Kumari"];
+    const genericNames = ["Super 30 Vision", "Iron Paradise Gym", "Dr. Verma Clinic", "Patliputra Prime Real Estate", "Vidyamandir Classes", "Anytime Fitness", "Clove Dental", "Cult.Fit", "Goal Institute", "Gold's Gym"];
     return genericNames.map((n, i) => ({
       name: n,
       phone: `+919835${100000 + i * 432}`,
